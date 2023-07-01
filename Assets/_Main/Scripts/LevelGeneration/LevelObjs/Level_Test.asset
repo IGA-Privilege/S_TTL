@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08860afb18dd6c54fb7b087a01127d5a, type: 3}
+  m_Name: Level_Test
+  m_EditorClassIdentifier: 
+  is2DLevel: 1
+  colorPalette: {fileID: 2800000, guid: 2eda35e25f94a3d4eb2e2a21e4b32313, type: 3}
+  maps:
+  - map: {fileID: 2800000, guid: 35b720d1fb110f44cb5e131f8a236cc9, type: 3}
+    layerName: Background
+  - map: {fileID: 2800000, guid: c3ded5436b1a4a94c950826f0f41b168, type: 3}
+    layerName: Default
+  colorArray_2D:
+  - color: {r: 0, g: 0, b: 0, a: 1}
+    colorObjs:
+    - sprite: {fileID: 21300000, guid: f02f6510985b8fa4eac37140d14d37e8, type: 3}
+      proportion: 0
+  - color: {r: 1, g: 1, b: 1, a: 1}
+    colorObjs:
+    - sprite: {fileID: 21300000, guid: 26db2ba12dcf4d548bdd8ed0968cd6b2, type: 3}
+      proportion: 0
+  - color: {r: 0.2, g: 1, b: 0, a: 1}
+    colorObjs:
+    - sprite: {fileID: 21300000, guid: 9e3603459b63163428de949fa2eacf2c, type: 3}
+      proportion: 2
+    - sprite: {fileID: 21300000, guid: 75b1072d459e52e43a70ffd562437a9a, type: 3}
+      proportion: 1
+    - sprite: {fileID: 21300000, guid: 04d1e8a80cd94f54fb142ef31a54a00f, type: 3}
+      proportion: 1
+    - sprite: {fileID: 21300000, guid: e07ad08ec6641514589aa0135dc14810, type: 3}
+      proportion: 1
+  - color: {r: 0.38431373, g: 0.41960785, b: 0.78431374, a: 1}
+    colorObjs:
+    - sprite: {fileID: 21300000, guid: af96f235e1d4150468d74a2539c3e397, type: 3}
+      proportion: 0
+  - color: {r: 0.78431374, g: 0.38431373, b: 0.6117647, a: 1}
+    colorObjs:
+    - sprite: {fileID: 21300000, guid: a64881923dcf50b408e8a9a27673d0f6, type: 3}
+      proportion: 2
+    - sprite: {fileID: 21300000, guid: f283961b0ef90cc4390a0d7eb4b83027, type: 3}
+      proportion: 1
+    - sprite: {fileID: 21300000, guid: 24706fbd4d4079e449bc23b3850782fc, type: 3}
+      proportion: 1
+  - color: {r: 0.78431374, g: 0.6901961, b: 0.38431373, a: 1}
+    colorObjs:
+    - sprite: {fileID: 21300000, guid: c2a585cf40f6a0349b1417f55a6b309f, type: 3}
+      proportion: 0
+  colorArray_3D:
+  - color: {r: 0, g: 0, b: 0, a: 1}
+    colorObjs:
+    - mesh: {fileID: 0}
+      material: {fileID: 0}
+      proportion: 0
+    - mesh: {fileID: 0}
+      material: {fileID: 0}
+      proportion: 0
+    - mesh: {fileID: 0}
+      material: {fileID: 0}
+      proportion: 0
+  - color: {r: 1, g: 1, b: 1, a: 1}
+    colorObjs: []
+  - color: {r: 0.2, g: 1, b: 0, a: 1}
+    colorObjs: []
+  - color: {r: 0.38431373, g: 0.41960785, b: 0.78431374, a: 1}
+    colorObjs: []
+  - color: {r: 0.78431374, g: 0.38431373, b: 0.6117647, a: 1}
+    colorObjs: []
+  - color: {r: 0.78431374, g: 0.6901961, b: 0.38431373, a: 1}
+    colorObjs: []

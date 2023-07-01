@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7678d18ac2e5fa641b15d86687e0549e, type: 3}
+  m_Name: ER_3
+  m_EditorClassIdentifier: 
+  maxHp: 2
+  moveSpeed: 3
+  enemyName: 
+  shootRange: 8
+  bulletCount: 3
+  fireRate: 4
+  bulletSpeed: 2
+  bulletDamage: 4
+  projectileRangeGap: 20
+  bulletAudio: {fileID: 0}
+  bulletPrefab: {fileID: 3283623009125935030, guid: e4e1b146356e4644eb79a29dc9b262d6, type: 3}
