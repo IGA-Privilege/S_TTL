@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 137352415}
   - component: {fileID: 137352414}
   m_Layer: 11
-  m_Name: Background (4)
+  m_Name: Field (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -210,7 +210,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -372,7 +372,7 @@ GameObject:
   - component: {fileID: 567582452}
   - component: {fileID: 567582451}
   m_Layer: 11
-  m_Name: Background (5)
+  m_Name: Field (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -402,7 +402,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -718,23 +718,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerToFollow: {fileID: 660556771}
   spawnArea: {fileID: 1191127414}
-  aiPrefabsToSpawn:
-  - {fileID: 6418292935032431622, guid: da04c2c1296ff9c4fabde04841fe20ce, type: 3}
-  - {fileID: 6418292935032431622, guid: f6c792e24d97f8d49b8441c71b9a3212, type: 3}
-  spawnTimer:
-  - 100
-  - 2
-  lastSpawnTimer:
-  - 0
-  - 0
   rangedDatas:
   - {fileID: 11400000, guid: 75d421aff289bb74bb87bec9b80a9017, type: 2}
   - {fileID: 11400000, guid: cd5a1aae061878f48aab8303f7f88e7f, type: 2}
   - {fileID: 11400000, guid: f6584b7b0e6862249be2d9f5cdc7c38c, type: 2}
-  layerMaskNoSpawn:
+  meleeEnemyPrefab: {fileID: 8950693819868015857, guid: da04c2c1296ff9c4fabde04841fe20ce, type: 3}
+  rangedEnemyPrefab: {fileID: 6131765364977071857, guid: f6c792e24d97f8d49b8441c71b9a3212, type: 3}
+  spawningFieldLayerM:
     serializedVersion: 2
-    m_Bits: 3008
-  setDistance: 3
+    m_Bits: 2048
+  fieldMelee: {fileID: 1611569083}
+  fieldRanged0: {fileID: 1275278208}
+  fieldRanged1: {fileID: 137352413}
+  fieldRanged2: {fileID: 567582450}
+  viewDistance: 5
+  maxSpawnDistance: 8
+  spawnInterval: 4
 --- !u!1 &1191127412
 GameObject:
   m_ObjectHideFlags: 0
@@ -829,7 +828,7 @@ GameObject:
   - component: {fileID: 1275278210}
   - component: {fileID: 1275278209}
   m_Layer: 11
-  m_Name: Background (3)
+  m_Name: Field (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -859,7 +858,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -937,8 +936,8 @@ GameObject:
   - component: {fileID: 1458191750}
   - component: {fileID: 1458191752}
   - component: {fileID: 1458191751}
-  m_Layer: 11
-  m_Name: Background (6)
+  m_Layer: 10
+  m_Name: Field (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -968,7 +967,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1047,7 +1046,7 @@ GameObject:
   - component: {fileID: 1611569085}
   - component: {fileID: 1611569084}
   m_Layer: 11
-  m_Name: Background (2)
+  m_Name: Field (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1077,7 +1076,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1155,8 +1154,8 @@ GameObject:
   - component: {fileID: 1659958910}
   - component: {fileID: 1659958912}
   - component: {fileID: 1659958911}
-  m_Layer: 11
-  m_Name: Background (1)
+  m_Layer: 0
+  m_Name: Field (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1186,7 +1185,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}

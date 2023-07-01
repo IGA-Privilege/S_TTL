@@ -16,11 +16,14 @@ public class EnemyRanged : BaseEnemy
 
     void Start()
     {
-        enemyInfo = M_EnemySpawner.Instance.rangedDatas[UnityEngine.Random.Range(0, M_EnemySpawner.Instance.rangedDatas.Length)];
         currentHealth = enemyInfo.maxHp;
         TakeDamage += NormalHitted;
         TakeDamage += DeathComfirm;
+    }
 
+    public void SetEnemyInfo(Data_Ranged info)
+    {
+        enemyInfo = info;
     }
 
     void Update()
