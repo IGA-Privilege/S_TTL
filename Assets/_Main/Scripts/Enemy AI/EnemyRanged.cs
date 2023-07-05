@@ -26,8 +26,9 @@ public class EnemyRanged : BaseEnemy
         enemyInfo = info;
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if (isAlive) StateControl();
         if (AIAction != null) AIAction();
     }
@@ -50,14 +51,20 @@ public class EnemyRanged : BaseEnemy
 
     private void ApproachToPlayer()
     {
-        Vector2 direction = (O_Character.Instance.transform.position - transform.position).normalized;
-        rb_Enemy.velocity = direction * moveSpeed;
+        if (!O_Character.Instance.isDashing)
+        {
+            Vector2 direction = (O_Character.Instance.transform.position - transform.position).normalized;
+            rb_Enemy.velocity = direction * moveSpeed;
+        }
     }
 
     private void EscapeFromPlayer()
     {
-        Vector2 direction = (transform.position - O_Character.Instance.transform.position).normalized;
-        rb_Enemy.velocity = direction * moveSpeed;
+        if (!O_Character.Instance.isDashing)
+        {
+            Vector2 direction = (transform.position - O_Character.Instance.transform.position).normalized;
+            rb_Enemy.velocity = direction * moveSpeed;
+        }
     }
 
     //private void ShootPlayer()
@@ -81,14 +88,14 @@ public class EnemyRanged : BaseEnemy
             {
                 GameObject newBullet = Instantiate(enemyInfo.bulletPrefab, transform.position, Quaternion.identity);
                 newBullet.GetComponent<O_Bullet>().InitializeBullet(enemyInfo.bulletDamage, enemyInfo.bulletSpeed, direction);
-                newBullet.GetComponent<O_Bullet>().FireBullet();
+                newBullet.GetComponent<O_Bullet>().FireBullet(this);
             }
         }
         else
         {
             GameObject newBullet = Instantiate(enemyInfo.bulletPrefab, transform.position, Quaternion.identity);
             newBullet.GetComponent<O_Bullet>().InitializeBullet(enemyInfo.bulletDamage, enemyInfo.bulletSpeed, shootDirection);
-            newBullet.GetComponent<O_Bullet>().FireBullet();
+            newBullet.GetComponent<O_Bullet>().FireBullet(this);
         }
 
 

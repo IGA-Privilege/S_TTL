@@ -6,27 +6,24 @@ using DG.Tweening;
 public enum WeaponState { ReadyForAttack, Attacking, MovingBack, OnCoolDown }
 public class O_Weapon : MonoBehaviour
 {
-    protected int pivotIndex;
-    protected WeaponState currentState = WeaponState.ReadyForAttack;
+    public WeaponState currentState = WeaponState.ReadyForAttack;
     protected Rigidbody2D rb_Weapon;
     protected Data_Weapon weaponData;
     protected float timer_CoolDown = 0;
-    protected Vector2 aimDirection;
+    public Vector2 aimDirection;
     protected Vector2 backDirection;
-    protected Transform lauchPoint;
+    protected Vector3 lauchPoint;
 
     private void Start()
     {
         rb_Weapon = GetComponent<Rigidbody2D>();
-        lauchPoint = M_Weapon.Instance.GetWeaponPivotPos(pivotIndex);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         switch (currentState)
         {
             case WeaponState.ReadyForAttack:
-                FollowPlayer();
                 break;
             case WeaponState.Attacking:
                 DoAttack();
@@ -37,38 +34,25 @@ public class O_Weapon : MonoBehaviour
         }
     }
 
-    public void InitializeWeapon(int targetIndex,Data_Weapon thisData)
+    public void InitializeWeapon(Vector3 launchPoint, Data_Weapon thisData, Vector2 flyDirection)
     {
-        pivotIndex = targetIndex;
         weaponData = thisData;
+        lauchPoint = launchPoint;
+        aimDirection = flyDirection;
+        currentState = WeaponState.Attacking;
     }
 
-    public void MovingBackToPlayer()
+    public virtual void MovingBackToPlayer()
     {
-        backDirection = (lauchPoint.position - transform.position).normalized;
-        rb_Weapon.velocity = backDirection * weaponData.shootSpeed;
-        if (Vector2.Distance(transform.position, lauchPoint.position) <= 0.3f)
+        backDirection = (O_Character.Instance.transform.position - transform.position).normalized;
+        rb_Weapon.velocity = 2 * backDirection * weaponData.shootSpeed;
+        if (Vector2.Distance(transform.position, O_Character.Instance.transform.position) <= 1f)
         {
             timer_CoolDown = weaponData.coolDown;
             currentState = WeaponState.ReadyForAttack; 
         }
     }
 
-    public void FollowPlayer()
-    {
-        transform.position = lauchPoint.position;
-        timer_CoolDown -= Time.deltaTime;
-        if (timer_CoolDown <= 0)
-        {
-            EnterAttack();
-            currentState = WeaponState.Attacking;
-        }
-    }
-
-    public void EnterAttack()
-    {
-        aimDirection = (transform.position - O_Character.Instance.transform.position).normalized;
-    }
 
     public virtual void DoAttack() { }
 
@@ -78,12 +62,12 @@ public class O_Weapon : MonoBehaviour
         currentState = WeaponState.MovingBack;
     }
 
-    public void ChangeColliderStateTo(bool targetState)
+    public void SetColliderEnabled(bool targetState)
     {
         GetComponent<BoxCollider2D>().enabled = targetState;
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    public virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {

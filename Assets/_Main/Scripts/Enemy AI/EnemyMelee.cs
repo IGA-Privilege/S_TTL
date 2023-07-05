@@ -13,8 +13,9 @@ public class EnemyMelee : BaseEnemy
         TakeDamage += DeathComfirm;
     }
 
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         if (isFollowing && isAlive) Walk();
     }
 

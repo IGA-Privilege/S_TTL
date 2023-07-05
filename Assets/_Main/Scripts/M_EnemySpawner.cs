@@ -49,25 +49,21 @@ public class M_EnemySpawner : Singleton<M_EnemySpawner>
         if (distanceToMeleeField < distanceToRangedField0 && distanceToMeleeField < distanceToRangedField1 && distanceToMeleeField < distanceToRangedField2)
         {
             Instantiate(meleeEnemyPrefab, nextSpawnPos, Quaternion.identity);
-            Debug.Log("生成了近战型");
         }
         else if (distanceToRangedField0 < distanceToMeleeField && distanceToRangedField0 < distanceToRangedField1 && distanceToRangedField0< distanceToRangedField2)
         {
             EnemyRanged enemyRanged = Instantiate(rangedEnemyPrefab, nextSpawnPos, Quaternion.identity);
             enemyRanged.SetEnemyInfo(rangedDatas[0]);
-            Debug.Log("生成了远程型1");
         }
         else if (distanceToRangedField1 < distanceToMeleeField && distanceToRangedField1 < distanceToRangedField0 && distanceToRangedField1 < distanceToRangedField2)
         {
             EnemyRanged enemyRanged = Instantiate(rangedEnemyPrefab, nextSpawnPos, Quaternion.identity);
             enemyRanged.SetEnemyInfo(rangedDatas[1]);
-            Debug.Log("生成了远程型2");
         }
         else if (distanceToRangedField2 < distanceToMeleeField && distanceToRangedField2 < distanceToRangedField0 && distanceToRangedField2 < distanceToRangedField1)
         {
             EnemyRanged enemyRanged = Instantiate(rangedEnemyPrefab, nextSpawnPos, Quaternion.identity);
             enemyRanged.SetEnemyInfo(rangedDatas[2]);
-            Debug.Log("生成了远程型3");
         }
     }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class O_Bullet : MonoBehaviour
 {
+    public BaseEnemy damageSource;
     private int damage;
     private float moveSpeed;
     private Vector2 direction;
@@ -29,8 +30,17 @@ public class O_Bullet : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, _angle);
     }
 
-    public void FireBullet()
+    public void FireBullet(BaseEnemy damageSource)
     {
+        this.damageSource = damageSource;
         rigid.AddForce(moveSpeed * transform.right, ForceMode2D.Impulse);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent<O_Character>(out O_Character character))
+        {
+            character.TakeDamage(damageSource);
+        }
     }
 }

@@ -6,8 +6,8 @@ public class O_Push : O_Weapon
 {
     public override void DoAttack()
     {
-        ChangeColliderStateTo(true);
+        SetColliderEnabled(true);
         rb_Weapon.velocity = aimDirection * weaponData.shootSpeed;
-        if (Vector2.Distance(transform.position, lauchPoint.position) >= weaponData.attackRange) ExitAttack();
+        if (Vector2.Distance(transform.position, lauchPoint) >= weaponData.attackRange) ExitAttack();
     }
 }

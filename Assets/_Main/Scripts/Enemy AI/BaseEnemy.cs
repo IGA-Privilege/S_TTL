@@ -6,17 +6,30 @@ using DG.Tweening;
 
 public class BaseEnemy : MonoBehaviour
 {
+    public O_PowerUp deathLootPref;
     public Rigidbody2D rb_Enemy;
     public float moveSpeed = 2;
-    public int maxHealth = 3;
+    public float maxHealth = 3;
     protected float currentHealth;
     protected Action TakeDamage;
     protected bool isAlive = true;
+    protected float takeDamageTimer = 0f;
+    protected float takeDamageInterval = 0.2f;
+    public bool canTakeDamage { get { return takeDamageTimer > takeDamageInterval; } }
 
-    public void OnTakeDamage(int dmgAmount)
+    protected virtual void Update()
     {
-        currentHealth -= dmgAmount;
-        TakeDamage();
+        takeDamageTimer += Time.deltaTime;
+    }
+
+    public void OnTakeDamage(float dmgAmount)
+    {
+        if (canTakeDamage)
+        {
+            currentHealth -= dmgAmount;
+            TakeDamage();
+            takeDamageTimer = 0f;
+        }
     }
 
     public void NormalHitted()
@@ -33,6 +46,7 @@ public class BaseEnemy : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
+            Instantiate(deathLootPref, transform.position, Quaternion.identity);
             GetComponent<BoxCollider2D>().enabled = false;
             float colorTime = 0.2f;
             isAlive = false;

@@ -144,8 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbd5ab276ef98f4d841f6edd86860e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  deathLootPref: {fileID: 4679418799224345394, guid: c8d68efb99b03764db69ba0794c1d857, type: 3}
   rb_Enemy: {fileID: 642977158771723672}
   moveSpeed: 2
   maxHealth: 2
-  enemyInfo: {fileID: 11400000, guid: f6584b7b0e6862249be2d9f5cdc7c38c, type: 2}
-  pre_EnemyBullet: {fileID: 7224519871614082920, guid: 2aeecb9cefe351b41bc3c20bbd5c6184, type: 3}

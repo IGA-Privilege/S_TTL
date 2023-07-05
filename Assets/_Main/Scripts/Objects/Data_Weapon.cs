@@ -8,9 +8,9 @@ public class Data_Weapon : ScriptableObject
     public WeaponType attackType;
     public float coolDown;
     public float attackRange;
-    public int damageAmount;
+    public float damageAmount;
     public float shootSpeed;
     public GameObject obj_Weapon;
 }
 
-public enum WeaponType { Push, Puush, Push180, Puuush, Slap, MultiSlap, BigSlap }
+public enum WeaponType { Push, Spear }
