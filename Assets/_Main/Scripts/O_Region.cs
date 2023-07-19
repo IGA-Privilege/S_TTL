@@ -10,13 +10,13 @@ public class O_Region : MonoBehaviour
 {
     [SerializeField] private Sprite regionSprite;
     [SerializeField] private Sprite voidSprite;
-    [SerializeField] private Transform playerSpawnPoint;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private BoxCollider2D boxCollider;
-    [SerializeField] private O_Portal leftPortal;
-    [SerializeField] private O_Portal rightPortal;
-    [SerializeField] private O_Portal upPortal;
-    [SerializeField] private O_Portal downPortal;
+    public O_Portal leftPortal;
+    public O_Portal rightPortal;
+    public O_Portal upPortal;
+    public O_Portal downPortal;
+    public Transform playerSpawnPoint;
     [HideInInspector]
     public bool IsVoid;
     [HideInInspector]
@@ -49,6 +49,8 @@ public class O_Region : MonoBehaviour
             case TraverseDirection.Upwards: upPortal.isOpen = true; upPortal.OpenAndLinkRegion(regionLinkedToPortal); break;
             case TraverseDirection.Downwards: downPortal.isOpen = true; downPortal.OpenAndLinkRegion(regionLinkedToPortal); break;
         }
+
+        UpdateSpriteAndCollider();
     }
 
     public Vector3 GetPortalPosition(TraverseDirection whichPortal)
@@ -87,6 +89,16 @@ public class O_Region : MonoBehaviour
     {
         IsVoid = isVoid;
         CoordsInGrid = coordsInGrid;
+        UpdateSpriteAndCollider();
+
+        Vector3 center = 0.5f * (M_LevelManager.Instance.GetRegionBoundsMax(CoordsInGrid) + M_LevelManager.Instance.GetRegionBoundsMin(CoordsInGrid));
+        // Spirte素材的pixelPerUnit需要为图片的长宽（像素）的二分之一
+        transform.position = center;
+        transform.localScale = 0.5f * (M_LevelManager.Instance.GetRegionBoundsMax(CoordsInGrid) - M_LevelManager.Instance.GetRegionBoundsMin(CoordsInGrid));
+    }
+
+    private void UpdateSpriteAndCollider()
+    {
         if (IsVoid)
         {
             spriteRenderer.sprite = voidSprite;
@@ -97,11 +109,18 @@ public class O_Region : MonoBehaviour
             spriteRenderer.sprite = regionSprite;
             boxCollider.isTrigger = true;
         }
+    }
 
-        Vector3 center = 0.5f * (M_LevelManager.Instance.GetRegionBoundsMax(CoordsInGrid) + M_LevelManager.Instance.GetRegionBoundsMin(CoordsInGrid));
-        // Spirte素材的pixelPerUnit需要为图片的长宽（像素）的二分之一
-        transform.position = center;
-        transform.localScale = 0.5f * (M_LevelManager.Instance.GetRegionBoundsMax(CoordsInGrid) - M_LevelManager.Instance.GetRegionBoundsMin(CoordsInGrid));
+    public static TraverseDirection GetTraverseDirectionOpposite(TraverseDirection direction)
+    {
+        switch (direction)
+        {
+            case TraverseDirection.Leftwards: return TraverseDirection.Rightwards;
+                case TraverseDirection.Rightwards: return TraverseDirection.Leftwards;
+                case TraverseDirection.Upwards: return TraverseDirection.Downwards;
+                case TraverseDirection.Downwards: return TraverseDirection.Upwards;
+        }
+        return TraverseDirection.Leftwards;
     }
 }
 

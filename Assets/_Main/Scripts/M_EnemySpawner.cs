@@ -41,6 +41,7 @@ public class M_EnemySpawner : Singleton<M_EnemySpawner>
     private void GameOver()
     {
         Time.timeScale = 0f;
+        Debug.LogError("Game Over!");
     }
 
     public void HandleSpawnEnemyRequest(O_Region regionIn)

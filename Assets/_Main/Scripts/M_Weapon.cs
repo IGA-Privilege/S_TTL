@@ -438,5 +438,6 @@ public enum RunePower
     LethalDash,
     HealingDash,
     SwiftDash,
-    ImpactDash
+    ImpactDash,
+    None
 }

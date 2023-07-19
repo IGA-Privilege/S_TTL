@@ -127,6 +127,7 @@ MonoBehaviour:
   toDirection: 2
   spriteRenderer: {fileID: 6217803667175335889}
   isOpen: 0
+  regionTeleportTo: {fileID: 0}
 --- !u!1 &220205545519900905
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,6 +285,7 @@ MonoBehaviour:
   toDirection: 1
   spriteRenderer: {fileID: 8900820765436995982}
   isOpen: 0
+  regionTeleportTo: {fileID: 0}
 --- !u!1 &1442411691356974311
 GameObject:
   m_ObjectHideFlags: 0
@@ -413,13 +415,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   regionSprite: {fileID: 21300000, guid: 1b8865afe03e21c47a6d2ee257accc60, type: 3}
   voidSprite: {fileID: 21300000, guid: 03b03eedd63a99a4cbc27e3914e1ffbf, type: 3}
-  playerSpawnPoint: {fileID: 8077703973070870368}
   spriteRenderer: {fileID: 1442411691356974310}
   boxCollider: {fileID: 1360059448963475542}
-  leftPortal: {fileID: 0}
-  rightPortal: {fileID: 0}
-  upPortal: {fileID: 0}
-  downPortal: {fileID: 0}
+  leftPortal: {fileID: 729391537282021152}
+  rightPortal: {fileID: 3506627419629327349}
+  upPortal: {fileID: 2604815639976207548}
+  downPortal: {fileID: 2773268177563079888}
+  playerSpawnPoint: {fileID: 8077703973070870368}
   IsVoid: 0
   CoordsInGrid: {x: 0, y: 0}
 --- !u!1 &6519635382233650658
@@ -549,6 +551,7 @@ MonoBehaviour:
   toDirection: 0
   spriteRenderer: {fileID: 8338224951085186363}
   isOpen: 0
+  regionTeleportTo: {fileID: 0}
 --- !u!1 &7072056881526650613
 GameObject:
   m_ObjectHideFlags: 0
@@ -673,6 +676,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   regionIn: {fileID: 5042474265866838493}
   boxCollider: {fileID: 8823270181646111569}
-  toDirection: 1
+  toDirection: 3
   spriteRenderer: {fileID: 104777972022007495}
   isOpen: 0
+  regionTeleportTo: {fileID: 0}
