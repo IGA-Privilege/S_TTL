@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class M_EnemySpawner : Singleton<M_EnemySpawner>
 {
@@ -16,30 +18,53 @@ public class M_EnemySpawner : Singleton<M_EnemySpawner>
     public Transform fieldRanged2;
 	public float viewDistance;
     public float maxSpawnDistance;
-    public float spawnInterval;//每隔几秒生成一只怪
+    public TMP_Text enemiesNumberText;
 
     private Vector2 nextSpawnPos;
-	private float timerFunc;
+    private HashSet<BaseEnemy> _spawnedEnemies = new HashSet<BaseEnemy>();
+    private readonly int _maxEnemiesNumber = 80;
 
-
-
-    void Start()
-	{
-		timerFunc = 0;  
-	}
-
-	void Update()
+    private void Update()
     {
-        timerFunc += Time.deltaTime;
+        CheckEnemiesNumber();
+    }
 
-        if (CanSpawnEnemy())
+    private void CheckEnemiesNumber()
+    {
+        if (_spawnedEnemies.Count > _maxEnemiesNumber)
         {
-            GetRandomSpawnLocation();
-            SpawnEnemyAccordingToPlayerPos();
+            GameOver();
+        }
+        enemiesNumberText.text = "Enemies Number:" + _spawnedEnemies.Count.ToString();
+    }
+
+    private void GameOver()
+    {
+        Time.timeScale = 0f;
+    }
+
+    public void HandleSpawnEnemyRequest(O_Region regionIn)
+    {
+        GetRandomSpawnLocation(regionIn);
+        SpawnEnemyAccordingToRegion();
+    }
+
+    private void SpawnEnemyAccordingToRegion()
+    {
+        BaseEnemy enemy = Instantiate(meleeEnemyPrefab, nextSpawnPos, Quaternion.identity);
+        _spawnedEnemies.Add(enemy);
+    }
+
+    public void OnEnemyDie(BaseEnemy enemyDead)
+    {
+        if (_spawnedEnemies.Contains(enemyDead))
+        {
+            _spawnedEnemies.Remove(enemyDead);
         }
     }
 
-    private void SpawnEnemyAccordingToPlayerPos()
+    /**
+    private void SpawnEnemyAccordingToRegion()
     {
         float distanceToMeleeField = Vector2.Distance(playerToFollow.transform.position, fieldMelee.position);
         float distanceToRangedField0 = Vector2.Distance(playerToFollow.transform.position, fieldRanged0.position);
@@ -66,39 +91,23 @@ public class M_EnemySpawner : Singleton<M_EnemySpawner>
             enemyRanged.SetEnemyInfo(rangedDatas[2]);
         }
     }
+    */
 
 
-    private bool CanSpawnEnemy()
+
+    private void GetRandomSpawnLocation(O_Region region)
     {
-        bool spawnIsAGo = false;
-
-        if (Physics2D.OverlapCircle(playerToFollow.transform.position, 0.2f, spawningFieldLayerM))
-        {
-            if (timerFunc > spawnInterval)
-            {
-                timerFunc = 0f;
-                spawnIsAGo = true;
-            }
-        }
-
-        return spawnIsAGo;
-    }
-
-    private void GetRandomSpawnLocation()
-    {
-        nextSpawnPos = GetRandomLocation();
+        nextSpawnPos = GetRandomLocation(region);
         while (IsDistanceTooNear(playerToFollow.transform.position, nextSpawnPos, viewDistance))
         {
-            nextSpawnPos = GetRandomLocation();
+            nextSpawnPos = GetRandomLocation(region);
         }
-
-
     }
 
-    Vector2 GetRandomLocation()
+    private Vector2 GetRandomLocation(O_Region region)
 	{
-		float randomX = Random.Range(playerToFollow.transform.position.x - maxSpawnDistance, playerToFollow.transform.position.x + maxSpawnDistance);
-		float randomY = Random.Range(playerToFollow.transform.position.y - maxSpawnDistance, playerToFollow.transform.position.y + maxSpawnDistance);
+		float randomX = Random.Range(region.SpriteBounds.min.x, region.SpriteBounds.max.x);
+		float randomY = Random.Range(region.SpriteBounds.min.y, region.SpriteBounds.max.y);
 		Vector2 randomPosition = new Vector2(randomX, randomY);
 		return randomPosition;
 	}

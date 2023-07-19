@@ -47,6 +47,7 @@ public class BaseEnemy : MonoBehaviour
         if (currentHealth <= 0)
         {
             Instantiate(deathLootPref, transform.position, Quaternion.identity);
+            M_EnemySpawner.Instance.OnEnemyDie(this);
             GetComponent<BoxCollider2D>().enabled = false;
             float colorTime = 0.2f;
             isAlive = false;
