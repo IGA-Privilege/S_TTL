@@ -52,8 +52,9 @@ public class M_EnemySpawner : Singleton<M_EnemySpawner>
 
     private void SpawnEnemyAccordingToRegion()
     {
-        BaseEnemy enemy = Instantiate(meleeEnemyPrefab, nextSpawnPos, Quaternion.identity);
-        _spawnedEnemies.Add(enemy);
+        EnemyRanged enemyRanged = Instantiate(rangedEnemyPrefab, nextSpawnPos, Quaternion.identity);
+        enemyRanged.SetEnemyInfo(rangedDatas[0]);
+        _spawnedEnemies.Add(enemyRanged);
     }
 
     public void OnEnemyDie(BaseEnemy enemyDead)

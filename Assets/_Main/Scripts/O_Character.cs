@@ -13,6 +13,7 @@ public class O_Character : Singleton<O_Character>
     public Transform destination;
     public O_PlayerShadow dashBlurShadow;
     private SpriteRenderer characterSprite;
+    private Animator _animator;
 
     public float maxHP = 999;
     private float currentHP;
@@ -32,6 +33,7 @@ public class O_Character : Singleton<O_Character>
 
     void Start()
     {
+        _animator = GetComponent<Animator>();
         rb_Character = GetComponent<Rigidbody2D>();
         characterSprite = GetComponent<SpriteRenderer>();
         currentHP = maxHP;
@@ -124,19 +126,21 @@ public class O_Character : Singleton<O_Character>
             if (direction != Vector2.zero)
             {
                 rb_Character.velocity = direction * moveSpeed;
+                _animator.SetBool("isMoving", true);
             }
             else
             {
                 rb_Character.velocity = Vector2.zero;
+                _animator.SetBool("isMoving", false);
             }
 
             if (horiAxis > 0)
             {
-                characterSprite.flipX = true;
+                characterSprite.flipX = false;
             }
             else if (horiAxis < 0)
             {
-                characterSprite.flipX = false;
+                characterSprite.flipX = true;
             }
         }
     }
