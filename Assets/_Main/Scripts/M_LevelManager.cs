@@ -9,6 +9,7 @@ using UnityEngine.Serialization;
 
 public class M_LevelManager : Singleton<M_LevelManager>
 {
+    [SerializeField] private Camera mainCamera;
     [SerializeField] private O_Character player;
     [FormerlySerializedAs("initialRegions")] [SerializeField] private List<Vector2Int> walkableRegions;
     [SerializeField] private O_Region regionPrefab;
@@ -16,8 +17,9 @@ public class M_LevelManager : Singleton<M_LevelManager>
     [SerializeField] private TMP_Text nextRegionSpawnText;
     private O_Region[,] _gridSystem;
     private float _newRegionSpawnTimer = 0f;
-    private readonly float _newRegionSpawnInterval = 15f;
+    private readonly float _newRegionSpawnInterval = 10f;
     private readonly int initialGridSize = 11;
+    private Vector3 _cameraTargetPosition;
 
 
     private void Start()
@@ -28,6 +30,16 @@ public class M_LevelManager : Singleton<M_LevelManager>
     private void Update()
     {
         TickNextRegionSpawn();
+        CameraLerpPosition();
+    }
+
+    private void CameraLerpPosition()
+    {
+        if (mainCamera.transform.position != _cameraTargetPosition)
+        {
+            float lerpSpeed = 4f;
+            mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, _cameraTargetPosition, lerpSpeed * Time.deltaTime);
+        }
     }
 
     private void TickNextRegionSpawn()
@@ -141,7 +153,10 @@ public class M_LevelManager : Singleton<M_LevelManager>
                     O_Region region = Instantiate(regionPrefab, GetWorldPositionFromCoords(coords), Quaternion.identity);
                     region.Intialize(false, coords);
                     _gridSystem[i, j] = region;
-                    player.transform.position = region.playerSpawnPoint.position;
+                    Vector3 spawnPosition = region.playerSpawnPoint.position;
+                    player.transform.position = spawnPosition;
+                    mainCamera.transform.position = new Vector3(spawnPosition.x, spawnPosition.y, -10);
+                    _cameraTargetPosition = new Vector3(spawnPosition.x, spawnPosition.y, -10);
                 }
                 else
                 {
@@ -156,21 +171,21 @@ public class M_LevelManager : Singleton<M_LevelManager>
     public Vector3 GetWorldPositionFromCoords(Vector2Int coords)
     {
         float xOffset = coords.x * 2f * regionPrefab.HalfWidth;
-        float yOffset = coords.x * 2f * regionPrefab.HalfWidth;
+        float yOffset = coords.y * 2f * regionPrefab.HalfHeight;
         return new Vector3(gridStartPoint.position.x + xOffset, gridStartPoint.position.y + yOffset, 0f) ;
     }
 
     public Vector3 GetRegionBoundsMin(Vector2Int coords)
     {
         float xOffset = (coords.x * 2 - 1) * regionPrefab.HalfWidth;
-        float yOffset = (coords.y * 2 - 1) * regionPrefab.HalfWidth;
+        float yOffset = (coords.y * 2 - 1) * regionPrefab.HalfHeight;
         return new Vector3(gridStartPoint.position.x + xOffset, gridStartPoint.position.y + yOffset, 0f);
     }
 
     public Vector3 GetRegionBoundsMax(Vector2Int coords)
     {
         float xOffset = (coords.x * 2 + 1) * regionPrefab.HalfWidth;
-        float yOffset = (coords.y * 2 + 1) * regionPrefab.HalfWidth;
+        float yOffset = (coords.y * 2 + 1) * regionPrefab.HalfHeight;
         return new Vector3(gridStartPoint.position.x + xOffset, gridStartPoint.position.y + yOffset, 0f);
     }
 
@@ -178,6 +193,7 @@ public class M_LevelManager : Singleton<M_LevelManager>
     {
         float offset = 1f;
         player.transform.position = toRegion.GetPortalPosition(fromDirection);
+        _cameraTargetPosition = new Vector3(toRegion.playerSpawnPoint.position.x, toRegion.playerSpawnPoint.position.y, -10);
         switch (fromDirection)
         {
             case TraverseDirection.Leftwards: player.transform.position += new Vector3(offset, 0, 0); break;

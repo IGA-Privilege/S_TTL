@@ -9,8 +9,8 @@ using UnityEngine.UIElements;
 public class O_Region : MonoBehaviour
 {
     [SerializeField] private Sprite regionSprite;
-    [SerializeField] private Sprite voidSprite;
     [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer neonTexture;
     [SerializeField] private BoxCollider2D boxCollider;
     public O_Portal leftPortal;
     public O_Portal rightPortal;
@@ -22,6 +22,7 @@ public class O_Region : MonoBehaviour
     [HideInInspector]
     public Vector2Int CoordsInGrid;
     public float HalfWidth { get { return 10f; } }
+    public float HalfHeight { get { return 7.1f; } }
     public Bounds SpriteBounds { get { return spriteRenderer.bounds; } }
 
     private float _enemySpawnTimer;
@@ -92,21 +93,25 @@ public class O_Region : MonoBehaviour
         UpdateSpriteAndCollider();
 
         Vector3 center = 0.5f * (M_LevelManager.Instance.GetRegionBoundsMax(CoordsInGrid) + M_LevelManager.Instance.GetRegionBoundsMin(CoordsInGrid));
-        // Spirte素材的pixelPerUnit需要为图片的长宽（像素）的二分之一
+        // Spirte素材的pixelPerUnit需要为图片的长的二分之一，并将素材的长宽比同步到此脚本的HalfWidth、HalfHeight
         transform.position = center;
-        transform.localScale = 0.5f * (M_LevelManager.Instance.GetRegionBoundsMax(CoordsInGrid) - M_LevelManager.Instance.GetRegionBoundsMin(CoordsInGrid));
+        Vector3 regionBoundsSize = 0.5f * (M_LevelManager.Instance.GetRegionBoundsMax(CoordsInGrid) - M_LevelManager.Instance.GetRegionBoundsMin(CoordsInGrid));
+        transform.localScale = new Vector3(regionBoundsSize.x, regionBoundsSize.x, 1f);
     }
 
     private void UpdateSpriteAndCollider()
     {
+        spriteRenderer.sprite = regionSprite;
         if (IsVoid)
         {
-            spriteRenderer.sprite = voidSprite;
+            spriteRenderer.enabled = false;
+            neonTexture.enabled = false;
             boxCollider.isTrigger = false;
         }
         else
         {
-            spriteRenderer.sprite = regionSprite;
+            spriteRenderer.enabled = true;
+            neonTexture.enabled = true;
             boxCollider.isTrigger = true;
         }
     }
