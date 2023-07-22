@@ -38,7 +38,7 @@ public class MusicManager : MonoBehaviour
 
     private void GloomEffectReactsToMusic()
     {
-        float totalFrequency = GetBassAvergeFrequency() + GetNBAvergeFrequency() + GetMiddleAvergeFrequency() + GetHighAvergeFrequency();
+        float totalFrequency = GetBassAvergeFrequency() + GetNBAvergeFrequency();
         float minBloomIntensity = 5f;
         float lerpSpeed = 0.05f;
         float _bloomIntensityAmplifier = 5f;

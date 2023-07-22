@@ -41,7 +41,7 @@ public class M_EnemySpawner : Singleton<M_EnemySpawner>
     private void GameOver()
     {
         Time.timeScale = 0f;
-        Debug.LogError("Game Over!");
+        Debug.LogError("Game Over! Enemies Too Many!");
     }
 
     public void HandleSpawnEnemyRequest(O_Region regionIn)
