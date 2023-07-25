@@ -2,14 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
-[RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(BoxCollider2D))]
 public class O_Region : MonoBehaviour
 {
-    [SerializeField] private Sprite regionSprite;
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer mainSpriteRenderer;
+    [SerializeField] private Transform planeSpritesParent;
     [SerializeField] private SpriteRenderer neonTexture;
     [SerializeField] private BoxCollider2D boxCollider;
     public O_Portal leftPortal;
@@ -22,8 +22,8 @@ public class O_Region : MonoBehaviour
     [HideInInspector]
     public Vector2Int CoordsInGrid;
     public float HalfWidth { get { return 10f; } }
-    public float HalfHeight { get { return 7.1f; } }
-    public Bounds SpriteBounds { get { return spriteRenderer.bounds; } }
+    public float HalfHeight { get { return 5.14f; } }
+    public Bounds SpriteBounds { get { return mainSpriteRenderer.bounds; } }
 
     private float _enemySpawnTimer;
     private readonly float _enemySpawnInterval = 10f;
@@ -101,16 +101,24 @@ public class O_Region : MonoBehaviour
 
     private void UpdateSpriteAndCollider()
     {
-        spriteRenderer.sprite = regionSprite;
+        SpriteRenderer[] planeSprites = planeSpritesParent.GetComponentsInChildren<SpriteRenderer>();
+
         if (IsVoid)
         {
-            spriteRenderer.enabled = false;
+            foreach (SpriteRenderer sprite in planeSprites)
+            {
+                sprite.enabled = false;
+            }
             neonTexture.enabled = false;
             boxCollider.isTrigger = false;
         }
         else
         {
-            spriteRenderer.enabled = true;
+            foreach (SpriteRenderer sprite in planeSprites)
+            {
+                sprite.enabled = true;
+            }
+            mainSpriteRenderer.enabled = true;
             neonTexture.enabled = true;
             boxCollider.isTrigger = true;
         }
