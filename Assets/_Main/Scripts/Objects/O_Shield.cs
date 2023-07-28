@@ -9,11 +9,22 @@ public class O_Shield : O_Weapon
     private float _maxFlyTime = 0.2f;
     private bool _isOneOff = false;
     private bool _hasHitEnemy = false;
+    private Vector3 _normalScale;
+    private Vector3 _extendedScale;
+
+    private void Awake()
+    {
+        _normalScale = transform.localScale;
+        _extendedScale = _normalScale * 2f;
+    }
 
     public override void DoAttack()
     {
+        float resizeSpeed = 15f;
+        transform.localScale = Vector3.Lerp(transform.localScale, _extendedScale, resizeSpeed * Time.deltaTime);
+        transform.up = aimDirection;
+
         _shieldFlyTimer += Time.deltaTime;
-        transform.right = aimDirection;
         SetColliderEnabled(true);
         rb_Weapon.velocity = aimDirection * weaponData.shootSpeed + O_Character.Instance.rb_Character.velocity;
         if (_shieldFlyTimer > _maxFlyTime) 
@@ -25,6 +36,9 @@ public class O_Shield : O_Weapon
 
     public override void MovingBackToPlayer()
     {
+        float resizeSpeed = 15f;
+        transform.localScale = Vector3.Lerp(transform.localScale, _normalScale, resizeSpeed * Time.deltaTime);
+
         backDirection = (O_Character.Instance.transform.position - transform.position).normalized;
         rb_Weapon.velocity = 2 * backDirection * weaponData.shootSpeed;
         if (Vector2.Distance(transform.position, O_Character.Instance.transform.position) <= 1f)

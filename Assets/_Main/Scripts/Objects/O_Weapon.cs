@@ -64,7 +64,7 @@ public class O_Weapon : MonoBehaviour
 
     public void SetColliderEnabled(bool targetState)
     {
-        GetComponent<BoxCollider2D>().enabled = targetState;
+        GetComponent<Collider2D>().enabled = targetState;
     }
 
     public virtual void OnCollisionEnter2D(Collision2D collision)

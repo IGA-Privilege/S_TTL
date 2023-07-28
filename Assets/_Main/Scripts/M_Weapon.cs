@@ -161,7 +161,7 @@ public class M_Weapon : Singleton<M_Weapon>
 
     private IEnumerator PlayShieldBatterEffect()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.04f);
         shieldBatterEffect.Play();
     }
 
@@ -169,9 +169,9 @@ public class M_Weapon : Singleton<M_Weapon>
     {
         if (_shieldOnHand.currentState == WeaponState.ReadyForAttack)
         {
-            _shieldOnHand.transform.position = transform.position + new Vector3(aimDirection.x, aimDirection.y, 0);
-            _shieldOnHand.transform.right = transform.right;
-            shieldBatterEffect.transform.position = transform.position + new Vector3(aimDirection.x, aimDirection.y, 0);
+            _shieldOnHand.transform.position = transform.position + 0.7f * new Vector3(aimDirection.x, aimDirection.y, 0);
+            _shieldOnHand.transform.up = aimDirection;
+            shieldBatterEffect.transform.position = transform.position + 1.5f * new Vector3(aimDirection.x, aimDirection.y, 0);
             shieldBatterEffect.transform.up = aimDirection;
         }
         _shieldOnHand.aimDirection = aimDirection;
@@ -179,7 +179,7 @@ public class M_Weapon : Singleton<M_Weapon>
 
     private void ShieldRoundBatter()
     {
-        int fireAmount = 12;
+        int fireAmount = 3;
         for (int i = 0; i < fireAmount; i++)
         {
             float angle = 360 / fireAmount * i + Vector2.Angle(transform.right, aimDirection);
@@ -187,6 +187,7 @@ public class M_Weapon : Singleton<M_Weapon>
             float yPos = weaponPivotRadius * Mathf.Sin(angle * Mathf.PI / 180);
             Vector3 firePoint = new Vector3(transform.position.x + xPos, transform.position.y + yPos, 0);
             O_Shield shield = SpawnNewWeapon(_shieldData, firePoint, (firePoint - transform.position).normalized).GetComponent<O_Shield>();
+            shield.aimDirection = firePoint - transform.position;
             shield.SetOneOff(true);
         }
     }
@@ -195,14 +196,8 @@ public class M_Weapon : Singleton<M_Weapon>
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            runeActivationDic[RunePower.SwiftDash] = true;
-            Debug.Log(RunePower.OffensiveDash.ToString() + "is On!");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            runeActivationDic[RunePower.BlurDash] = true;
-            Debug.Log(RunePower.AvengerBatter.ToString() + "is On!");
+            runeActivationDic[RunePower.RoundBatter] = true;
+            Debug.Log(RunePower.RoundBatter.ToString() + "is On!");
         }
 
         UpdateRunePowerInfluences();

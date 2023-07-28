@@ -50,6 +50,10 @@ public class Boss : MonoBehaviour
         {
             laserTargetHint.gameObject.SetActive(false);
         }
+        if (laser.gameObject.activeInHierarchy)
+        {
+            laser.startPoint = bigHead.position;
+        }
     }
 
     private IEnumerator PerformLazerShoot()
