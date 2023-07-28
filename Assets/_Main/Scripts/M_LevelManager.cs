@@ -11,6 +11,7 @@ public class M_LevelManager : Singleton<M_LevelManager>
 {
     [SerializeField] private Camera mainCamera;
     [SerializeField] private O_Character player;
+    [SerializeField] private Boss boss;
     [FormerlySerializedAs("initialRegions")] [SerializeField] private List<Vector2Int> walkableRegions;
     [SerializeField] private O_Region regionPrefab;
     [SerializeField] private Transform gridStartPoint;
@@ -20,9 +21,9 @@ public class M_LevelManager : Singleton<M_LevelManager>
     private readonly float _newRegionSpawnInterval = 10f;
     private readonly int initialGridSize = 11;
     private Vector3 _cameraTargetPosition;
+    private bool _regionSpawnFlag = false;
 
-
-    private void Start()
+    private void Awake()
     {
         GenerateGrid();
     }
@@ -107,6 +108,16 @@ public class M_LevelManager : Singleton<M_LevelManager>
             adjacentRegion.SetPortalOpen(TraverseDirection.Upwards, newWalkableRegion);
             newWalkableRegion.SetPortalOpen(TraverseDirection.Downwards, adjacentRegion);
         }
+
+        _regionSpawnFlag = !_regionSpawnFlag;
+        if (_regionSpawnFlag)
+        {
+            newWalkableRegion.EnemyType = RegionEnemyType.Melee;
+        }
+        else
+        {
+            newWalkableRegion.EnemyType = RegionEnemyType.RangedA;
+        }
     }
 
     private bool TryFindSuitableSpawnCoords(ref Vector2Int newRegionCoords, ref O_Region adjacentRegion, ref TraverseDirection portalDirection)
@@ -155,6 +166,7 @@ public class M_LevelManager : Singleton<M_LevelManager>
                     _gridSystem[i, j] = region;
                     Vector3 spawnPosition = region.playerSpawnPoint.position;
                     player.transform.position = spawnPosition;
+                    boss.transform.position = spawnPosition + new Vector3(0f, 10f, 0f);
                     mainCamera.transform.position = new Vector3(spawnPosition.x, spawnPosition.y, -10);
                     _cameraTargetPosition = new Vector3(spawnPosition.x, spawnPosition.y, -10);
                 }

@@ -30,6 +30,9 @@ public class O_Character : Singleton<O_Character>
     public bool isDashing { get { return _dashTimer < dashTime; } }
     public bool canDash { get { return _dashTimer > dashCoolDown; } }
     [HideInInspector] public Vector2 lastMoveDirection;
+    private bool _canControl = true;
+    public SpriteRenderer stunEffect;
+
 
     void Start()
     {
@@ -53,7 +56,7 @@ public class O_Character : Singleton<O_Character>
         _dashTimer += Time.deltaTime;
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (canDash)
+            if (canDash && _canControl)
             {
                 _dashTimer = 0f;
                 if (M_Weapon.Instance.runeActivationDic[RunePower.BlurDash])
@@ -113,7 +116,11 @@ public class O_Character : Singleton<O_Character>
         float horiAxis = Input.GetAxis("Horizontal");
         float verAxis = Input.GetAxis("Vertical");
 
-        Vector2 direction = new Vector2(horiAxis, verAxis).normalized;
+        Vector2 direction = Vector2.zero;
+        if (_canControl)
+        {
+            direction = new Vector2(horiAxis, verAxis).normalized;
+        }
         lastMoveDirection = direction;
 
         if (isDashing)
@@ -160,5 +167,20 @@ public class O_Character : Singleton<O_Character>
         s.AppendCallback(() => DOTween.To(() => sprite.color, x => sprite.color = x, Color.red, colorTime));
         s.AppendInterval(colorTime);
         s.AppendCallback(() => DOTween.To(() => sprite.color, x => sprite.color = x, Color.white, colorTime));
+    }
+
+    public void SetStunned()
+    {
+        StartCoroutine(RecoverFromStunned());
+    }
+
+    private IEnumerator RecoverFromStunned()
+    {
+        _canControl = false;
+        yield return new WaitForSeconds(0.4f);
+        stunEffect.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2.6f);
+        _canControl = true;
+        stunEffect.gameObject.SetActive(false);
     }
 }

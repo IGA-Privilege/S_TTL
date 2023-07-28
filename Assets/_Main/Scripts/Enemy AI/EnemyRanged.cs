@@ -11,8 +11,7 @@ public class EnemyRanged : BaseEnemy
     private Data_Ranged enemyInfo;
     private float shootTimer;
     private float behaviorChangeTimer;
-    //public GameObject pre_EnemyBullet;
-
+    private bool _behaviourFlag = false;
 
     void Start()
     {
@@ -43,18 +42,20 @@ public class EnemyRanged : BaseEnemy
         if(behaviorChangeTimer <= 0)
         {
             if (distance < enemyInfo.shootRange) AIAction = EscapeFromPlayer;
-            else AIAction = ApproachToPlayer;
-            behaviorChangeTimer = UnityEngine.Random.Range(3, 5);
+            else AIAction = PerformManeuver;
+            behaviorChangeTimer = UnityEngine.Random.Range(1, 2);
+            _behaviourFlag = !_behaviourFlag;
         }
      
     }
 
-    private void ApproachToPlayer()
+    private void PerformManeuver()
     {
         if (!O_Character.Instance.isDashing)
         {
-            Vector2 direction = (O_Character.Instance.transform.position - transform.position).normalized;
-            rb_Enemy.velocity = direction * moveSpeed;
+            Vector2 playerDirection = (O_Character.Instance.transform.position - transform.position).normalized;
+            playerDirection = Vector2.Perpendicular(playerDirection) * (_behaviourFlag ? 1 : -1);
+            rb_Enemy.velocity = playerDirection * moveSpeed;
         }
     }
 
@@ -66,15 +67,6 @@ public class EnemyRanged : BaseEnemy
             rb_Enemy.velocity = direction * moveSpeed;
         }
     }
-
-    //private void ShootPlayer()
-    //{
-    //    shootTimer = enemyInfo.fireRate;
-    //    GameObject newBullet = Instantiate(pre_EnemyBullet, transform.position, Quaternion.identity);
-    //    Vector2 shootDirection = O_Character.Instance.transform.position - transform.position;
-    //    newBullet.GetComponent<O_Bullet>().InitializeBullet(4, 5, shootDirection);
-    //    newBullet.GetComponent<O_Bullet>().FireBullet();
-    //}
 
     private void ShootPlayer()
     {

@@ -20,6 +20,8 @@ public class O_Region : MonoBehaviour
     [HideInInspector]
     public bool IsVoid;
     [HideInInspector]
+    public RegionEnemyType EnemyType;
+    [HideInInspector]
     public Vector2Int CoordsInGrid;
     public float HalfWidth { get { return 10f; } }
     public float HalfHeight { get { return 5.14f; } }
@@ -83,7 +85,7 @@ public class O_Region : MonoBehaviour
 
     private void RequestAnEnemySpawn()
     {
-        M_EnemySpawner.Instance.HandleSpawnEnemyRequest(this);
+        M_EnemySpawner.Instance.HandleSpawnEnemyRequest(this, EnemyType);
     }
 
     public void Intialize(bool isVoid, Vector2Int coordsInGrid)
@@ -140,4 +142,9 @@ public class O_Region : MonoBehaviour
 public enum TraverseDirection
 {
     Leftwards, Rightwards, Upwards, Downwards
+}
+
+public enum RegionEnemyType 
+{
+    Melee, RangedA
 }

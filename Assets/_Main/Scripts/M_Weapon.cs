@@ -12,7 +12,8 @@ public class M_Weapon : Singleton<M_Weapon>
     public Data_Weapon originalSpearData;
     public Data_Weapon originalShieldData;
     public float weaponPivotRadius;
-    [HideInInspector] public Camera playerCamera; 
+    [HideInInspector] public Camera playerCamera;
+    public ParticleSystem shieldBatterEffect;
 
     public List<Vector3> oddsPivots;
     public List<Vector3> evenPivots;
@@ -38,6 +39,7 @@ public class M_Weapon : Singleton<M_Weapon>
 
     private void Awake()
     {
+        shieldBatterEffect.Stop();
         playerCamera = Camera.main;
         CopyWeaponsData();
         InitializeRuneDictionary();
@@ -148,6 +150,7 @@ public class M_Weapon : Singleton<M_Weapon>
 
     public void DoShieldBatter()
     {
+        StartCoroutine(PlayShieldBatterEffect());
         _shieldOnHand.currentState = WeaponState.Attacking;
         _shieldBatterTimer = 0f;
         if (runeActivationDic[RunePower.RoundBatter])
@@ -156,12 +159,20 @@ public class M_Weapon : Singleton<M_Weapon>
         }
     }
 
+    private IEnumerator PlayShieldBatterEffect()
+    {
+        yield return new WaitForSeconds(0.1f);
+        shieldBatterEffect.Play();
+    }
+
     private void UpdateShieldOnHand()
     {
         if (_shieldOnHand.currentState == WeaponState.ReadyForAttack)
         {
             _shieldOnHand.transform.position = transform.position + new Vector3(aimDirection.x, aimDirection.y, 0);
             _shieldOnHand.transform.right = transform.right;
+            shieldBatterEffect.transform.position = transform.position + new Vector3(aimDirection.x, aimDirection.y, 0);
+            shieldBatterEffect.transform.up = aimDirection;
         }
         _shieldOnHand.aimDirection = aimDirection;
     }

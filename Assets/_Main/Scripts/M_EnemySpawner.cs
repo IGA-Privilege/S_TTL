@@ -44,17 +44,34 @@ public class M_EnemySpawner : Singleton<M_EnemySpawner>
         Debug.LogError("Game Over! Enemies Too Many!");
     }
 
-    public void HandleSpawnEnemyRequest(O_Region regionIn)
+    public void HandleSpawnEnemyRequest(O_Region regionIn, RegionEnemyType enemyType)
     {
         GetRandomSpawnLocation(regionIn);
-        SpawnEnemyAccordingToRegion();
+        SpawnEnemyAccordingToRegion(enemyType);
     }
 
-    private void SpawnEnemyAccordingToRegion()
+    private void SpawnEnemyAccordingToRegion(RegionEnemyType enemyType)
     {
-        EnemyRanged enemyRanged = Instantiate(rangedEnemyPrefab, nextSpawnPos, Quaternion.identity);
-        enemyRanged.SetEnemyInfo(rangedDatas[0]);
-        _spawnedEnemies.Add(enemyRanged);
+        BaseEnemy enemyToSpawn = null;
+        switch (enemyType)
+        {
+            case RegionEnemyType.Melee:
+                EnemyMelee meleeEnemy = Instantiate(meleeEnemyPrefab, nextSpawnPos, Quaternion.identity);
+                enemyToSpawn = meleeEnemy;
+                break;
+            case RegionEnemyType.RangedA:
+                EnemyRanged rangedEnemy = Instantiate(rangedEnemyPrefab, nextSpawnPos, Quaternion.identity);
+                rangedEnemy.SetEnemyInfo(rangedDatas[0]);
+                enemyToSpawn = rangedEnemy;
+                break;
+            default:
+                break;
+        }
+
+        if (enemyToSpawn != null)
+        {
+            _spawnedEnemies.Add(enemyToSpawn);
+        }
     }
 
     public void OnEnemyDie(BaseEnemy enemyDead)
@@ -64,38 +81,6 @@ public class M_EnemySpawner : Singleton<M_EnemySpawner>
             _spawnedEnemies.Remove(enemyDead);
         }
     }
-
-    /**
-    private void SpawnEnemyAccordingToRegion()
-    {
-        float distanceToMeleeField = Vector2.Distance(playerToFollow.transform.position, fieldMelee.position);
-        float distanceToRangedField0 = Vector2.Distance(playerToFollow.transform.position, fieldRanged0.position);
-        float distanceToRangedField1 = Vector2.Distance(playerToFollow.transform.position, fieldRanged1.position);
-        float distanceToRangedField2 = Vector2.Distance(playerToFollow.transform.position, fieldRanged2.position);
-
-        if (distanceToMeleeField < distanceToRangedField0 && distanceToMeleeField < distanceToRangedField1 && distanceToMeleeField < distanceToRangedField2)
-        {
-            Instantiate(meleeEnemyPrefab, nextSpawnPos, Quaternion.identity);
-        }
-        else if (distanceToRangedField0 < distanceToMeleeField && distanceToRangedField0 < distanceToRangedField1 && distanceToRangedField0< distanceToRangedField2)
-        {
-            EnemyRanged enemyRanged = Instantiate(rangedEnemyPrefab, nextSpawnPos, Quaternion.identity);
-            enemyRanged.SetEnemyInfo(rangedDatas[0]);
-        }
-        else if (distanceToRangedField1 < distanceToMeleeField && distanceToRangedField1 < distanceToRangedField0 && distanceToRangedField1 < distanceToRangedField2)
-        {
-            EnemyRanged enemyRanged = Instantiate(rangedEnemyPrefab, nextSpawnPos, Quaternion.identity);
-            enemyRanged.SetEnemyInfo(rangedDatas[1]);
-        }
-        else if (distanceToRangedField2 < distanceToMeleeField && distanceToRangedField2 < distanceToRangedField0 && distanceToRangedField2 < distanceToRangedField1)
-        {
-            EnemyRanged enemyRanged = Instantiate(rangedEnemyPrefab, nextSpawnPos, Quaternion.identity);
-            enemyRanged.SetEnemyInfo(rangedDatas[2]);
-        }
-    }
-    */
-
-
 
     private void GetRandomSpawnLocation(O_Region region)
     {
