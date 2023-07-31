@@ -1,9 +1,12 @@
 using DG.Tweening;
+using MoreMountains.Tools;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.PlayerLoop;
 
 public class O_Character : Singleton<O_Character>
 {
@@ -31,6 +34,8 @@ public class O_Character : Singleton<O_Character>
     public bool canDash { get { return _dashTimer > dashCoolDown; } }
     [HideInInspector] public Vector2 lastMoveDirection;
     private bool _canControl = true;
+    private Vector2 moveDirection;
+
     public SpriteRenderer stunEffect;
 
 
@@ -54,16 +59,19 @@ public class O_Character : Singleton<O_Character>
     private void Update()
     {
         _dashTimer += Time.deltaTime;
-        if (Input.GetKeyDown(KeyCode.Space))
+        //if (Input.GetKeyDown(KeyCode.Space)) Dash();
+
+    }
+
+    private void Dash()
+    {
+        if (canDash && _canControl)
         {
-            if (canDash && _canControl)
+            _dashTimer = 0f;
+            if (M_Weapon.Instance.runeActivationDic[RunePower.BlurDash])
             {
-                _dashTimer = 0f;
-                if (M_Weapon.Instance.runeActivationDic[RunePower.BlurDash])
-                {
-                    O_PlayerShadow shadow1 = Instantiate(dashBlurShadow, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
-                    O_PlayerShadow shadow2 = Instantiate(dashBlurShadow, transform.position + new Vector3(0, -1, 0), Quaternion.identity);
-                }
+                O_PlayerShadow shadow1 = Instantiate(dashBlurShadow, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+                O_PlayerShadow shadow2 = Instantiate(dashBlurShadow, transform.position + new Vector3(0, -1, 0), Quaternion.identity);
             }
         }
     }
@@ -113,43 +121,57 @@ public class O_Character : Singleton<O_Character>
 
     void FixedUpdate()
     {
-        float horiAxis = Input.GetAxis("Horizontal");
-        float verAxis = Input.GetAxis("Vertical");
-
-        Vector2 direction = Vector2.zero;
-        if (_canControl)
+        if (!Gamepad.current.leftStick.IsPressed())
         {
-            direction = new Vector2(horiAxis, verAxis).normalized;
-        }
-        lastMoveDirection = direction;
-
-        if (isDashing)
-        {
-            rb_Character.velocity = direction * dashSpeed;
-            TickDashThings(direction);
+            moveDirection = Vector2.zero;
+            StopPlayerMovement();
         }
         else
         {
-            if (direction != Vector2.zero)
+            moveDirection = Gamepad.current.leftStick.ReadValue().normalized;
+        }
+
+        if (!_canControl)
+        {
+            moveDirection = Vector2.zero;
+            StopPlayerMovement();
+        }
+        lastMoveDirection = moveDirection;
+
+        if (isDashing)
+        {
+            rb_Character.velocity = moveDirection * dashSpeed;
+            TickDashThings(moveDirection);
+        }
+        else
+        {
+            if (moveDirection != Vector2.zero)
             {
-                rb_Character.velocity = direction * moveSpeed;
+                rb_Character.velocity = moveDirection * moveSpeed;
+                Debug.Log(rb_Character.velocity);
                 _animator.SetBool("isMoving", true);
             }
             else
             {
-                rb_Character.velocity = Vector2.zero;
+                StopPlayerMovement();
                 _animator.SetBool("isMoving", false);
             }
 
-            if (horiAxis > 0)
+            if (moveDirection.x > 0)
             {
                 characterSprite.flipX = false;
             }
-            else if (horiAxis < 0)
+            else if (moveDirection.x < 0)
             {
                 characterSprite.flipX = true;
             }
         }
+    }
+
+    private void StopPlayerMovement()
+    {
+        rb_Character.velocity = Vector2.zero;
+        rb_Character.inertia = 0f;
     }
 
     public void TakeDamage(BaseEnemy damageSource)
@@ -183,4 +205,30 @@ public class O_Character : Singleton<O_Character>
         _canControl = true;
         stunEffect.gameObject.SetActive(false);
     }
+
+    /**
+    public void ReadMovement(InputAction.CallbackContext context)
+    {
+        if (context.ReadValue<Vector2>() != Vector2.zero)
+        {
+            moveDirection = context.ReadValue<Vector2>().normalized;
+        }
+        else
+        {
+            moveDirection = Vector2.zero;
+        }
+    }
+
+    public void ReadAim(InputAction.CallbackContext context)
+    {
+        if (context.ReadValue<Vector2>() != Vector2.zero)
+        {
+            M_Weapon.Instance.aimDirection = context.ReadValue<Vector2>().normalized;
+        }
+        else
+        {
+        // do nothing
+        }
+    }
+    */
 }

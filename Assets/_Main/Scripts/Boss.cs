@@ -13,7 +13,7 @@ public class Boss : MonoBehaviour
     private float _poseChangeTimer = 0f;
     private readonly float _poseChangeInterval = 1.5f;
     private float _lazerShootTimer = 0f;
-    private readonly float _lazerShootInterval = 7f;
+    private readonly float _lazerShootInterval = 12f;
 
     private void Awake()
     {

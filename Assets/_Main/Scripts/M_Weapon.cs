@@ -21,7 +21,7 @@ public class M_Weapon : Singleton<M_Weapon>
     public Dictionary<RunePower, bool> runeActivationDic = new Dictionary<RunePower, bool>();
     private List<Transform> weaponPivots = new List<Transform>();
 
-    private Vector2 aimDirection;
+    public Vector2 aimDirection;
     [HideInInspector] public Data_Weapon _spearData;
     [HideInInspector] public Data_Weapon _shieldData;
     private O_Spear _spearOnHand;
@@ -122,13 +122,13 @@ public class M_Weapon : Singleton<M_Weapon>
         TickSpearFire();
         UpdateShieldOnHand();
         TickShieldBatter();
-        DebugInput();
+        //DebugInput();
     }
 
     private void UpdateAimDirection()
     {
-        Vector2 mousePos = playerCamera.ScreenToWorldPoint(Input.mousePosition);
-        aimDirection = (mousePos - (Vector2)transform.position).normalized;
+        //Vector2 mousePos = playerCamera.ScreenToWorldPoint(Input.mousePosition);
+        //aimDirection = (mousePos - (Vector2)transform.position).normalized;
         weaponPivotsParent.right = -aimDirection;
     }
 
