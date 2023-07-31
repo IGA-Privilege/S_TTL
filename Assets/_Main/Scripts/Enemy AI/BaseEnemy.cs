@@ -46,6 +46,7 @@ public class BaseEnemy : MonoBehaviour
     {
         if (currentHealth <= 0)
         {
+            FindObjectOfType<GameMaster>().GetComponent<GameMaster>().enemiesKilled++;
             Instantiate(deathLootPref, transform.position, Quaternion.identity);
             M_EnemySpawner.Instance.OnEnemyDie(this);
             GetComponent<BoxCollider2D>().enabled = false;

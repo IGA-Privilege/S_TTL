@@ -51,7 +51,7 @@ public class M_LevelManager : Singleton<M_LevelManager>
             _newRegionSpawnTimer = 0f;
             SpawnRandomNewWalkableRegion();
         }
-        nextRegionSpawnText.text = "Next Region Spawn In: " + Mathf.CeilToInt(_newRegionSpawnInterval - _newRegionSpawnTimer) + " sec";
+        nextRegionSpawnText.text = "Next Region Spawns In: " + Mathf.CeilToInt(_newRegionSpawnInterval - _newRegionSpawnTimer) + " sec";
     }
 
     private void SpawnRandomNewWalkableRegion()

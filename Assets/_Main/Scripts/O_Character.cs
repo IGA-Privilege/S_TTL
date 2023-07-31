@@ -59,11 +59,9 @@ public class O_Character : Singleton<O_Character>
     private void Update()
     {
         _dashTimer += Time.deltaTime;
-        //if (Input.GetKeyDown(KeyCode.Space)) Dash();
-
     }
 
-    private void Dash()
+    public void Dash()
     {
         if (canDash && _canControl)
         {
@@ -129,6 +127,15 @@ public class O_Character : Singleton<O_Character>
         else
         {
             moveDirection = Gamepad.current.leftStick.ReadValue().normalized;
+        }
+
+        if (!Gamepad.current.rightStick.IsPressed())
+        {
+            // do nothing
+        }
+        else
+        {
+            M_Weapon.Instance.aimDirection = Gamepad.current.rightStick.ReadValue().normalized;
         }
 
         if (!_canControl)

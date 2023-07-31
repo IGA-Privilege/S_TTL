@@ -95,6 +95,7 @@ public class M_Weapon : Singleton<M_Weapon>
         GenerateSpearPivots();
         _spearOnHand = SpawnNewWeapon(_spearData, transform.position, Vector2.zero).GetComponent<O_Spear>();
         _shieldOnHand = SpawnNewWeapon(_shieldData, transform.position, Vector2.zero).GetComponent<O_Shield>();
+        aimDirection = Vector2.right;
     }
 
     private void GenerateSpearPivots()

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
@@ -10,15 +11,19 @@ public class GameMaster : MonoBehaviour
     [SerializeField] private AudioClip uiButtonSound;
     [SerializeField] private RectTransform gameTitleUI;
     [SerializeField] private RectTransform gameOverUI;
+    [SerializeField] private TMP_Text gameOverText;
     [SerializeField] private RectTransform gamePausedUI;
     [SerializeField] private RectTransform enemyNumberUI;
     [SerializeField] private RectTransform gameControlUI;
     [SerializeField] private Image transitionImage;
     private float transitionColorAlpha;
+    public int enemiesKilled;
 
     private void Awake()
     {
+        enemiesKilled = 0;
         FreezeTime();
+        gameTitleUI.gameObject.SetActive(true);
     }
 
     public void StartGame()
@@ -31,6 +36,7 @@ public class GameMaster : MonoBehaviour
     public void SetPlayerGameOver()
     {
         gameOverUI.gameObject.SetActive(true);
+        gameOverText.text = "Good Game! Enemies Killed: " + enemiesKilled;
         FreezeTime();
     }
 

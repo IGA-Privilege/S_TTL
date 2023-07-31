@@ -35,13 +35,13 @@ public class M_EnemySpawner : Singleton<M_EnemySpawner>
         {
             GameOver();
         }
-        enemiesNumberText.text = "Enemies Number:" + _spawnedEnemies.Count.ToString();
+        enemiesNumberText.text = "Enemies Number:" + _spawnedEnemies.Count.ToString() + ";" + _maxEnemiesNumber + " cause game over";
     }
 
     private void GameOver()
     {
         Time.timeScale = 0f;
-        Debug.LogError("Game Over! Enemies Too Many!");
+        GetComponentInParent<GameMaster>().SetPlayerGameOver();
     }
 
     public void HandleSpawnEnemyRequest(O_Region regionIn, RegionEnemyType enemyType)
