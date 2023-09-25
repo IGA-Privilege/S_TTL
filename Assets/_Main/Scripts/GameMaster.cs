@@ -14,7 +14,6 @@ public class GameMaster : MonoBehaviour
     [SerializeField] private TMP_Text gameOverText;
     [SerializeField] private RectTransform gamePausedUI;
     [SerializeField] private RectTransform enemyNumberUI;
-    [SerializeField] private RectTransform gameControlUI;
     [SerializeField] private Image transitionImage;
     private float transitionColorAlpha;
     public int enemiesKilled;
@@ -81,7 +80,6 @@ public class GameMaster : MonoBehaviour
         yield return StartCoroutine(TransitionFadeOut(1f, Color.black));
         yield return new WaitForSeconds(0.5f);
         gameTitleUI.gameObject.SetActive(false);
-        gameControlUI.gameObject.SetActive(true);
         yield return StartCoroutine(TransitionFadeIn(1f, Color.black));
     }
 

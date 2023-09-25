@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.PlayerLoop;
 
 public class O_Character : Singleton<O_Character>
@@ -119,29 +118,20 @@ public class O_Character : Singleton<O_Character>
 
     void FixedUpdate()
     {
-        if (!Gamepad.current.leftStick.IsPressed())
-        {
-            moveDirection = Vector2.zero;
-            StopPlayerMovement();
-        }
-        else
-        {
-            moveDirection = Gamepad.current.leftStick.ReadValue().normalized;
-        }
+        moveDirection = Vector2.zero;
+        StopPlayerMovement();
 
-        if (!Gamepad.current.rightStick.IsPressed())
-        {
-            // do nothing
-        }
-        else
-        {
-            M_Weapon.Instance.aimDirection = Gamepad.current.rightStick.ReadValue().normalized;
-        }
+        float horiAxis = Input.GetAxis("Horizontal");
+        float verAxis = Input.GetAxis("Vertical");
 
         if (!_canControl)
         {
             moveDirection = Vector2.zero;
             StopPlayerMovement();
+        }
+        else
+        {
+            moveDirection = new Vector2(horiAxis, verAxis).normalized;
         }
         lastMoveDirection = moveDirection;
 
@@ -173,6 +163,8 @@ public class O_Character : Singleton<O_Character>
                 characterSprite.flipX = true;
             }
         }
+
+        M_Weapon.Instance.aimDirection = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized;
     }
 
     private void StopPlayerMovement()

@@ -9,7 +9,6 @@ using UnityEngine.UIElements;
 public class O_Region : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer mainSpriteRenderer;
-    [SerializeField] private Transform planeSpritesParent;
     [SerializeField] private SpriteRenderer neonTexture;
     [SerializeField] private BoxCollider2D boxCollider;
     public O_Portal leftPortal;
@@ -29,6 +28,12 @@ public class O_Region : MonoBehaviour
 
     private float _enemySpawnTimer;
     private readonly float _enemySpawnInterval = 10f;
+    private Grid _gridObj;
+
+    private void Awake()
+    {
+        _gridObj = GetComponentInChildren<Grid>(); ;
+    }
 
     private void Start()
     {
@@ -103,23 +108,15 @@ public class O_Region : MonoBehaviour
 
     private void UpdateSpriteAndCollider()
     {
-        SpriteRenderer[] planeSprites = planeSpritesParent.GetComponentsInChildren<SpriteRenderer>();
-
         if (IsVoid)
         {
-            foreach (SpriteRenderer sprite in planeSprites)
-            {
-                sprite.enabled = false;
-            }
+            _gridObj.gameObject.SetActive(false);
             neonTexture.enabled = false;
             boxCollider.isTrigger = false;
         }
         else
         {
-            foreach (SpriteRenderer sprite in planeSprites)
-            {
-                sprite.enabled = true;
-            }
+            _gridObj.gameObject.SetActive(true);
             mainSpriteRenderer.enabled = true;
             neonTexture.enabled = true;
             boxCollider.isTrigger = true;

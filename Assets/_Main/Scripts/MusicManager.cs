@@ -10,6 +10,7 @@ using UnityEngine.Rendering.PostProcessing;
 public class MusicManager : MonoBehaviour
 {
     [SerializeField] private PostProcessVolume ppVolume;
+    [SerializeField] private LightSpawner lightSpawner;
 
     public List<Transform> objsReactingToBass, objsReactingToNB, objsReactingToMiddle, objsReactingToHigh;
     private AudioSource _audioSource;
@@ -19,6 +20,9 @@ public class MusicManager : MonoBehaviour
     private float _glintTimer;
     private bool _glintFlag;
     private float[] _spectrumWidth;
+    private Color _targetColor;
+    private float _colorChangeTimer = 0f;
+    private readonly float _colorChangeInterval = 6f;
 
     private Bloom _bloomEffect;
 
@@ -29,6 +33,35 @@ public class MusicManager : MonoBehaviour
         ppVolume.profile.TryGetSettings(out _bloomEffect);
     }
 
+    private void Update()
+    {
+        TickColorChanging();
+    }
+
+    private void TickColorChanging()
+    {
+        _colorChangeTimer += Time.deltaTime;
+        if (_colorChangeTimer > _colorChangeInterval)
+        {
+            SelectNewRandomColor();
+            _colorChangeTimer = 0f;
+        }
+
+        float timeLeft = 4f;
+        _bloomEffect.color.value = Color.Lerp(_bloomEffect.color.value, _targetColor, Time.deltaTime / timeLeft);
+
+        Light[] lights = lightSpawner.lightPrefab.GetComponentsInChildren<Light>();
+        for (int i = 0; i < lights.Length; i++)
+        {
+            lights[i].color = _bloomEffect.color.value;
+        }
+    }
+
+    private void SelectNewRandomColor()
+    {
+        _targetColor = UnityEngine.Random.ColorHSV(0f, 1f, 1f, 1f, 0.5f, 1f);
+    }
+
     private void FixedUpdate()
     {
         _audioSource.GetSpectrumData(_spectrumWidth, 0, FFTWindow.Blackman);
@@ -36,9 +69,15 @@ public class MusicManager : MonoBehaviour
         ObjsReactToMusic();
     }
 
+    
+
     private void GloomEffectReactsToMusic()
     {
         float totalFrequency = GetBassAvergeFrequency() + GetNBAvergeFrequency();
+
+        lightSpawner.fastest_speed = 5f + Mathf.Max((totalFrequency - 0.9f), 0f) * 40f;
+        lightSpawner.slowest_speed = 2f + Mathf.Max((totalFrequency - 0.9f), 0f) * 20f;
+
         float minBloomIntensity = 5f;
         float lerpSpeed = 0.05f;
         float _bloomIntensityAmplifier = 5f;

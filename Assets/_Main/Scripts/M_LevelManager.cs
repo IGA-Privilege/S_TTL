@@ -16,6 +16,7 @@ public class M_LevelManager : Singleton<M_LevelManager>
     [SerializeField] private O_Region regionPrefab;
     [SerializeField] private Transform gridStartPoint;
     [SerializeField] private TMP_Text nextRegionSpawnText;
+    [SerializeField] private LightSpawner lightPlate;
     private O_Region[,] _gridSystem;
     private float _newRegionSpawnTimer = 0f;
     private readonly float _newRegionSpawnInterval = 10f;
@@ -206,6 +207,7 @@ public class M_LevelManager : Singleton<M_LevelManager>
         float offset = 1f;
         player.transform.position = toRegion.GetPortalPosition(fromDirection);
         _cameraTargetPosition = new Vector3(toRegion.playerSpawnPoint.position.x, toRegion.playerSpawnPoint.position.y, -10);
+        lightPlate.transform.position = new Vector3(toRegion.playerSpawnPoint.position.x, toRegion.playerSpawnPoint.position.y, lightPlate.transform.position.z);
         switch (fromDirection)
         {
             case TraverseDirection.Leftwards: player.transform.position += new Vector3(offset, 0, 0); break;
